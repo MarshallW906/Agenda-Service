@@ -1,5 +1,7 @@
 # Agenda-Service
 
+![travis](https://travis-ci.org/MarshallW906/Agenda-Service.svg?branch=dev)
+
 Agenda-Service for Golang-Server-Computing
 
 Group Members:
