@@ -5,7 +5,5 @@ import (
 )
 
 func main() {
-	// something about database may be added before server.Start()
-
 	server.Start()
 }

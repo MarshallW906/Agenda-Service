@@ -7,22 +7,16 @@ import (
 )
 
 // CreateUser ..
-func CreateUser(username, password, email, phone string) error {
-	theUser := &entity.User{}
-	has, err := database.Engine.Table("user").Where("user.username = ?", username).Get(theUser)
+func CreateUser(newUser *entity.User) error {
+	theUser := &entity.User{Username: newUser.Username}
+	has, err := database.Engine.Table("user").Where("user.username = ?", theUser.Username).Get(theUser)
 	if err != nil {
 		return err
 	}
 	if has {
 		return er.UserAlreadyExists
 	}
-	theUser = &entity.User{
-		Username: username,
-		Password: password,
-		Email:    email,
-		Phone:    phone,
-	}
-	_, err = database.Engine.Insert(theUser)
+	_, err = database.Engine.Insert(newUser)
 	return err
 }
 
@@ -57,4 +51,12 @@ func ListAllUsers() (*entity.Users, error) {
 	allUsers := new(entity.Users)
 	err := database.Engine.Table("user").Find(allUsers)
 	return allUsers, err
+}
+
+// CheckLoginInfo ..
+func CheckLoginInfo(username, password string) (bool, error) {
+	return database.Engine.Table("user").Get(&entity.User{
+		Username: username,
+		Password: password,
+	})
 }
