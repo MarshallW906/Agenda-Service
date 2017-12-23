@@ -15,34 +15,35 @@
 package cmd
 
 import (
-	"github.com/ZM-J/Agenda-Service/Client/logger"
-	"github.com/ZM-J/Agenda-Service/Client/service"
-	"github.com/ZM-J/Agenda-Service/Client/utils"
+	"logger"
+	"service"
+	"utils"
 
 	"github.com/spf13/cobra"
 )
 
-// removeUserCmd represents the removeUser command
-var removeUserCmd = &cobra.Command{
-	Use:   "removeUser",
-	Short: "Remove a user",
-	Long: `Remove a user
-	- 用户删除
-	- args: username string, password string
-	- notes: 若成功删除当前用户，登出
+// loginCmd represents the login command
+var loginCmd = &cobra.Command{
+	Use:   "login",
+	Short: "Login",
+	Long: `Login
+	- 用户登录
+	- args: username (string), password (string)
+	- notes: 若已登录，则先登出，无论是否能登录成功
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		username := utils.GetNonEmptyString(cmd, "username")
 		password := utils.GetNonEmptyString(cmd, "password")
 
-		service.RemoveUser(username, password)
-		logger.Info("RemoveUser called with username:[%+v], password:[%+v]", username, password)
+		service.Login(username, password)
+
+		logger.Info("Login called with username:[%+v], password:[%+v]", username, password)
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(removeUserCmd)
+	loginCmd.Flags().StringP("username", "u", "", "Username")
+	loginCmd.Flags().StringP("password", "p", "", "Password")
 
-	removeUserCmd.Flags().StringP("username", "u", "", "specify username")
-	removeUserCmd.Flags().StringP("password", "p", "", "specify password")
+	RootCmd.AddCommand(loginCmd)
 }

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/ZM-J/Agenda-Service/Client/logger"
+	"logger"
 )
 
 type User struct {

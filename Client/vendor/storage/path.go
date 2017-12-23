@@ -16,14 +16,6 @@ func SessionFile() string {
 	return AgendaDir() + "session.json"
 }
 
-func UserFile() string {
-	return AgendaDir() + "users.json"
-}
-
-func MeetingFile() string {
-	return AgendaDir() + "meetings.json"
-}
-
 func CreateAgendaDir() {
 	os.Mkdir(AgendaDir(), 0755)
 }

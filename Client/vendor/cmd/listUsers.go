@@ -15,26 +15,28 @@
 package cmd
 
 import (
-	"github.com/ZM-J/Agenda-Service/Client/logger"
-	"github.com/ZM-J/Agenda-Service/Client/service"
+	"logger"
+	"service"
+
 	"github.com/spf13/cobra"
 )
 
-// listMeetingsCmd represents the listMeetings command
-var listMeetingsCmd = &cobra.Command{
-	Use:   "listMeetings",
-	Short: "List all the meetings",
-	Long: `List all the meetings. no args.
-	- usage: 列出所有与当前用户有关的会议
+// listUsersCmd represents the listUsers command
+var listUsersCmd = &cobra.Command{
+	Use:   "listUsers",
+	Short: "List all users",
+	Long: `List all users
+	- 列出所有用户
 	- args: None
-	- notes: 要求已登录,列出的会议包括该用户发起的，和参与的会议"
+	- notes: 要求已登录
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		service.ListAllMeetings()
-		logger.Info("ListMeetings called")
+		service.ListAllUsers()
+
+		logger.Info("ListUsers called")
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(listMeetingsCmd)
+	RootCmd.AddCommand(listUsersCmd)
 }

@@ -15,28 +15,28 @@
 package cmd
 
 import (
-	"github.com/ZM-J/Agenda-Service/Client/logger"
-	"github.com/ZM-J/Agenda-Service/Client/service"
+	"logger"
+	"service"
 
 	"github.com/spf13/cobra"
 )
 
-// listUsersCmd represents the listUsers command
-var listUsersCmd = &cobra.Command{
-	Use:   "listUsers",
-	Short: "List all users",
-	Long: `List all users
-	- 列出所有用户
+// logoutCmd represents the logout command
+var logoutCmd = &cobra.Command{
+	Use:   "logout",
+	Short: "Logout",
+	Long: `Logout
+	- 用户登出
 	- args: None
-	- notes: 要求已登录
+	- notes: 若未登录，则静默
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		service.ListAllUsers()
+		service.Logout()
 
-		logger.Info("ListUsers called")
+		logger.Info("Logout called")
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(listUsersCmd)
+	RootCmd.AddCommand(logoutCmd)
 }

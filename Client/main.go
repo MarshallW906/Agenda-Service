@@ -15,8 +15,8 @@
 package main
 
 import (
-	"github.com/ZM-J/Agenda-Service/Client/cmd"
-	"github.com/ZM-J/Agenda-Service/Client/storage"
+	"cmd"
+	"storage"
 )
 
 func init() {

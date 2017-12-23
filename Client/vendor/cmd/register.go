@@ -15,9 +15,9 @@
 package cmd
 
 import (
-	"github.com/ZM-J/Agenda-Service/Client/logger"
-	"github.com/ZM-J/Agenda-Service/Client/service"
-	"github.com/ZM-J/Agenda-Service/Client/utils"
+	"logger"
+	"service"
+	"utils"
 
 	"github.com/spf13/cobra"
 )
