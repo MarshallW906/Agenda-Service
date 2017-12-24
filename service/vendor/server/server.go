@@ -8,7 +8,7 @@ import (
 
 // Start the server
 func Start() {
-	newServer().Run(*args.Host + *args.Port)
+	newServer().Run(*args.Host + ":" + *args.Port)
 }
 
 // NewServer configures and returns a Server.

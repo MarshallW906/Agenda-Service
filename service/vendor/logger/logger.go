@@ -23,6 +23,6 @@ func Info(format string, v ...interface{}) {
 // FatalIf : Log operations with error aroused
 func FatalIf(err error) {
 	if err != nil {
-		errLogger.Fatalln(err)
+		errLogger.Println(err)
 	}
 }

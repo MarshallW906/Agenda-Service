@@ -17,9 +17,10 @@ var Engine *xorm.Engine
 
 func init() {
 	// initialize xorm engine
-	Engine, err := xorm.NewEngine("sqlite3", *args.DBfile)
+	engine, err := xorm.NewEngine("sqlite3", *args.DBfile)
 	er.CheckErr(err)
-	Engine.SetMapper(core.SameMapper{})
-	err = Engine.Sync2(new(entity.User), new(entity.Token))
+	engine.SetMapper(core.SameMapper{})
+	err = engine.Sync2(new(entity.User), new(entity.Token))
 	er.CheckErr(err)
+	Engine = engine
 }

@@ -4,12 +4,15 @@ import (
 	"database"
 	"entity"
 	er "err"
+
+	// register the sqlite3 engine for go
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // CreateUser ..
 func CreateUser(newUser *entity.User) error {
 	theUser := &entity.User{Username: newUser.Username}
-	has, err := database.Engine.Table("user").Where("user.username = ?", theUser.Username).Get(theUser)
+	has, err := database.Engine.Table("User").Get(theUser)
 	if err != nil {
 		return err
 	}
@@ -23,12 +26,12 @@ func CreateUser(newUser *entity.User) error {
 // DeleteUser ..
 func DeleteUser(username string) error {
 	theUser := &entity.User{Username: username}
-	has, err := database.Engine.Table("user").Get(theUser)
+	has, err := database.Engine.Table("User").Get(theUser)
 	if err != nil {
 		return err
 	}
 	if has {
-		_, err = database.Engine.Table("user").Delete(theUser)
+		_, err = database.Engine.Table("User").Delete(theUser)
 	}
 	return err
 }
@@ -36,7 +39,7 @@ func DeleteUser(username string) error {
 // RetriveUser ..
 func RetriveUser(username string) (*entity.User, error) {
 	theUser := &entity.User{Username: username}
-	has, err := database.Engine.Table("user").Get(theUser)
+	has, err := database.Engine.Table("User").Get(theUser)
 	if err != nil {
 		return nil, err
 	}
@@ -49,13 +52,13 @@ func RetriveUser(username string) (*entity.User, error) {
 // ListAllUsers ..
 func ListAllUsers() (*entity.Users, error) {
 	allUsers := new(entity.Users)
-	err := database.Engine.Table("user").Find(allUsers)
+	err := database.Engine.Table("User").Find(allUsers)
 	return allUsers, err
 }
 
 // CheckLoginInfo ..
 func CheckLoginInfo(username, password string) (bool, error) {
-	return database.Engine.Table("user").Get(&entity.User{
+	return database.Engine.Table("User").Get(&entity.User{
 		Username: username,
 		Password: password,
 	})

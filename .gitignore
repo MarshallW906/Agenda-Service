@@ -21,3 +21,9 @@ api.html
 
 # sqlite3 db
 *.db
+
+# testfiles for curl
+testfiles/
+
+# manual backup files
+*.bak

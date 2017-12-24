@@ -3,6 +3,7 @@ package server
 import (
 	"entity"
 	er "err"
+	"fmt"
 	"logger"
 	"model"
 	"net/http"
@@ -142,6 +143,12 @@ func handlerUserDelete() http.HandlerFunc {
 			ResponseNotFound(formatter, w)
 			return
 		}
+		err = model.DeleteToken(token)
+		if err != nil {
+			logger.FatalIf(err)
+			ResponseNotFound(formatter, w)
+			return
+		}
 		ResponseOK(formatter, w, struct{}{})
 	}
 }
@@ -149,6 +156,7 @@ func handlerUserDelete() http.HandlerFunc {
 func handlerUserCreate() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		req.ParseForm()
+		fmt.Println(req.Form)
 		username, password, email, phone :=
 			req.Form.Get("username"), req.Form.Get("password"),
 			req.Form.Get("email"), req.Form.Get("phone")
