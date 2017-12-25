@@ -4,4 +4,4 @@ go:
   - 1.8
 
 script:
-  - go test -v ./service/vendor/model
+  - go test -v ./server/vendor/model
