@@ -59,6 +59,13 @@ func DeleteToken(tokenStr string) error {
 	return err
 }
 
+// DeleteTokenByUsername ..
+func DeleteTokenByUsername(username string) error {
+	t := &entity.Token{Username: username}
+	_, err := database.Engine.Table("token").Delete(t)
+	return err
+}
+
 // CheckTokenValid : Token Valid if err == nil && BoolValue == true
 func CheckTokenValid(tokenStr string) (bool, error) {
 	return database.Engine.Table("token").Get(&entity.Token{Token: tokenStr})
