@@ -26,6 +26,11 @@ func ResponseOK(formatter *render.Render, w http.ResponseWriter, rawData interfa
 	formatter.JSON(w, http.StatusOK, GenResponseMsg(http.StatusOK, rawData))
 }
 
+// ResponseCreated ..
+func ResponseCreated(formatter *render.Render, w http.ResponseWriter, rawData interface{}) {
+	formatter.JSON(w, http.StatusCreated, GenResponseMsg(http.StatusCreated, rawData))
+}
+
 // ResponseForbidden ..
 func ResponseForbidden(formatter *render.Render, w http.ResponseWriter) {
 	formatter.JSON(w, http.StatusForbidden, GenResponseMsg(http.StatusForbidden, struct{}{}))
