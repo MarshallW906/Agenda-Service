@@ -21,5 +21,9 @@ func CreateAgendaDir() {
 }
 
 func RemoveSessionFile() {
-	os.Remove(SessionFile())
+	err := os.Remove(SessionFile())
+	// 若出错，则有可能是session.json本身是不存在的，也有可能是进程占用问题
+	if err != nil && !os.IsNotExist(err) {
+		panic(err)
+	}
 }

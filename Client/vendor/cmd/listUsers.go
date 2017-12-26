@@ -28,7 +28,7 @@ var listUsersCmd = &cobra.Command{
 	Long: `List all users
 	- 列出所有用户
 	- args: None
-	- notes: 要求已登录
+	- notes: 若成功删除当前用户，登出
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		service.ListAllUsers()

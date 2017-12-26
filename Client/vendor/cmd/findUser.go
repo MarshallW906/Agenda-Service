@@ -22,11 +22,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// removeUserCmd represents the removeUser command
-var removeUserCmd = &cobra.Command{
-	Use:   "removeUser",
-	Short: "Remove a user",
-	Long: `Remove a user
+// findUserCmd represents the findUser command
+var findUserCmd = &cobra.Command{
+	Use:   "findUser",
+	Short: "Find a user",
+	Long: `Find a user
 	- 用户删除
 	- args: username string
 	- notes: 要求已登录
@@ -34,13 +34,13 @@ var removeUserCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		username := utils.GetNonEmptyString(cmd, "username")
 
-		service.RemoveUser(username)
-		logger.Info("RemoveUser called with username:[%+v]", username)
+		service.FindUser(username)
+		logger.Info("FindUser called with username:[%+v]", username)
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(removeUserCmd)
+	RootCmd.AddCommand(findUserCmd)
 
-	removeUserCmd.Flags().StringP("username", "u", "", "specify username")
+	findUserCmd.Flags().StringP("username", "u", "", "specify username")
 }

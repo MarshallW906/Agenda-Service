@@ -2,11 +2,7 @@
 ![travisCI](https://travis-ci.org/FideoJ/Agenda.svg?branch=master)
 
 ## Introdution
-Agenda是一个基于命令行界面的会议管理程序，使用golang实现。
-## Install
-```
-go get github.com/FideoJ/Agenda
-```
+这是Agenda-Service的客户端，是一个基于命令行界面的用户相关操作的客户端程序，使用golang实现。
 
 ## Usage
 ```
@@ -37,36 +33,13 @@ go build
   - notes: 要求已登录
 - removeUser
   - usage: 用户删除
-  - args: username string, password string
-  - notes: 若成功删除当前用户，登出
-- createMeeting
-  - usage: 创建会议
-  - args: title string, startTime string, endTime string, participants []string
-  - notes: 要求已登录,时间格式:"YYYY-MM-DD HH:mm"
-- addParticipants
-  - usage: 增加会议参与者
-  - args: title string, participant string
-  - notes: 要求已登录,仅能操作当前用户为发起者的会议
-- removeParticipants
-  - usage: 删除会议参与者
-  - args: title string, participant string
-  - notes: 要求已登录,仅能操作当前用户为发起者的会议，仅剩发起者的会议应删除
-- listMeetings
-  - usage: 列出所有与当前用户有关的会议
-  - args: None
-  - notes: 要求已登录,时间格式:"YYYY:MM:DD HH:mm"
-- cancelMeeting
-  - usage: 取消会议
-  - args: title string
-  - notes: 要求已登录,仅能操作当前用户为发起者的会议
-- quitMeeting
-  - usage: 退出会议
-  - args: title string
-  - notes: 要求已登录,仅能操作当前用户为参与者的会议
-- clearMeetings
-  - usage: 清空会议
-  - args: None
-  - notes: 要求已登录,清除当前用户为发起者的会议
+  - args: username string
+  - notes: 要求已登录
+- findUser
+  - usage: 用户查询
+  - args: username string
+  - notes: 要求已登录
+
 
 ## Test Subcommands
 Data persistence: data of users and meetings will be stored as `*.json` files.
@@ -151,3 +124,12 @@ $ ./Agenda listMeetings
 TITLE           SPONSOR         START-TIME           END-TIME             PARTICIPANTS
 [INFO] 2017/11/05 14:19:26 listMeetings called
 ```
+
+go run main.go register --username SunXiaoChuan --password 258daidai --email 6324@douyu.com --phone 13838383838
+go run main.go register --username SunYaLong --password deyunse --email deyunse@douyu.com --phone 13666666666
+go run main.go login --username SunXiaoChuan --password 258daidai % right
+go run main.go login --username SunXiaoChuan --password daidai258 % wrong
+go run main.go listUsers
+go run main.go findUser --username SunYaLong
+go run main.go removeUser --username SunYaLong
+go run main.go logout
