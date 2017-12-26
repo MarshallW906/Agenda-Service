@@ -4,9 +4,6 @@ import (
 	"database"
 	"entity"
 	er "err"
-
-	// register the sqlite3 engine for go
-	_ "github.com/mattn/go-sqlite3"
 )
 
 // CreateUser ..

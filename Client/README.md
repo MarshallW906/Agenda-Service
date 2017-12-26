@@ -1,5 +1,4 @@
-# Agenda-go
-![travisCI](https://travis-ci.org/FideoJ/Agenda.svg?branch=master)
+# Agenda-Service: Client
 
 ## Introdution
 这是Agenda-Service的客户端，是一个基于命令行界面的用户相关操作的客户端程序，使用golang实现。
@@ -42,94 +41,40 @@ go build
 
 
 ## Test Subcommands
-Data persistence: data of users and meetings will be stored as `*.json` files.
+本地数据会话：本地登录数据会话保存在`session.json`文件中，且放在`$homedir/.agenda/`文件夹下（例如，在UNIX系统下的`$HOME/.agenda/`）。
 
-All the related `.json` file is stored in `$homedir/.agenda/` of current user. (eg. `$HOME/.agenda/` in *nix)
-
-```shell
-# register
-$ ./Agenda register -utest -ptest -etest@test.com -t12345678910
-[INFO] 2017/11/05 13:56:01 Register called with username:[test], password:[test], email:[test@test.com], phone:[12345678910]
-$ ./Agenda register -utest2 -ptest -etest2@test2.com -t12345678911
-[INFO] 2017/11/05 13:57:32 Register called with username:[test2], password:[test], email:[test2@test2.com], phone:[12345678911]
-
-# login
-$ ./Agenda login -utest --password test
-[INFO] 2017/11/05 13:58:08 Login called with username:[test], password:[test]
-
-# list all users. some users are pre-registered.
-$ ./Agenda listUsers
+`user_test.go`测试结果：
+```powershell
+PS D:\college\Junior\Fuwujisuan\gp\src\github.com\ZM-J\Agenda-Service\Client\vendor\service> go test
+Testing Register...
+Register successful.
+Testing Login...
+Login successful.
+Testing Logout...
+Login successful.
+Testing List All Users...
+Login successful.
 USERNAME             EMAIL                PHONE
-abc                  asdf                 3432
-abe                  asdf                 3432
-marsh                abc@123.com          1234
-test                 test@test.com        12345678910
-test2                test2@test2.com      12345678911
-abd                  asdf                 3432
-[INFO] 2017/11/05 13:59:16 ListUsers called
-
-# removeUser: test2
-$ ./Agenda removeUser --username test2 --password=test
-[INFO] 2017/11/05 14:03:13 RemoveUser called with username:[test2], password:[test]
-
-# createMeeting
-$ ./Agenda createMeeting --title=testMeeting -s"2012:12:12 12:12" -e"2012:12:13 13:13" -pabc -pabe
-[ERROR] 2017/11/05 14:05:38 parsing time "2012:12:12 12:12" as "2006-01-02 15:04": cannot parse ":12:12 12:12" as "-"
-$ ./Agenda createMeeting --title=testMeeting -s"2012-12-12 12:12" -e"2012-12-13 13:13" -pabc -pabe
-[INFO] 2017/11/05 14:06:19 CreateMeeting called with title: [testMeeting], startTime: [2012-12-12 12:12], endTime: [2012-12-13 13:13], participants: [[abc abe]]
-
-# addParticipant: user[abd] to meeting[testMeeting]
-$ ./Agenda addParticipant --title=testMeeting -pabd
-[INFO] 2017/11/05 14:07:26 addParticipant called with title: [testMeeting], participants: [[abd]]
-
-# removeParticipant: user[abe] from meeting[testMeeting]
-$ ./Agenda removeParticipant -ttestMeeting -pabe
-[INFO] 2017/11/05 14:08:17 removeParticipant called with title: [testMeeting], participants: [[abe]]
-
-# listMeetings: (created another meeting)
-$ ./Agenda listMeetings
-TITLE           SPONSOR         START-TIME           END-TIME             PARTICIPANTS
-testMeeting     test            2012-12-12 12:12     2012-12-13 13:13     abc            abd
-testMeeting2    test            2011-12-12 12:12     2011-12-13 13:13     abc
-[INFO] 2017/11/05 14:09:22 listMeetings called
-
-# cancelMeeting
-$ ./Agenda cancelMeeting --title=testMeeting2
-[INFO] 2017/11/05 14:10:07 CancelMeeting called with title: [testMeeting2]
-$ ./Agenda listMeetings
-TITLE           SPONSOR         START-TIME           END-TIME             PARTICIPANTS
-testMeeting     test            2012-12-12 12:12     2012-12-13 13:13     abc            abd
-[INFO] 2017/11/05 14:10:12 listMeetings called
-
-# quitMeeting
-$ ./Agenda logout
-[INFO] 2017/11/05 14:16:38 Logout called
-$ ./Agenda login --username=abc -p111
-[ERROR] 2017/11/05 14:16:49 Wrong username or password
-$ ./Agenda login --username=abc -p123
-[INFO] 2017/11/05 14:17:01 Login called with username:[abc], password:[123]
-$ ./Agenda quitMeeting --title=testMeeting
-[INFO] 2017/11/05 14:17:53 QuitMeeting called with title: [testMeeting]
-$ ./Agenda login -utest -ptest
-[INFO] 2017/11/05 14:18:43 Login called with username:[test], password:[test]
-$ ./Agenda listMeetings
-TITLE           SPONSOR         START-TIME           END-TIME             PARTICIPANTS
-testMeeting     test            2012-12-12 12:12     2012-12-13 13:13     abd
-[INFO] 2017/11/05 14:18:47 listMeetings called
-
-# clearMeetings
-$ ./Agenda clearMeetings
-[INFO] 2017/11/05 14:19:20 ClearMeetings called
-$ ./Agenda listMeetings
-TITLE           SPONSOR         START-TIME           END-TIME             PARTICIPANTS
-[INFO] 2017/11/05 14:19:26 listMeetings called
+Chuansao             mail                 13463246324
+Testing Find User...
+Login successful.
+USERNAME             EMAIL                PHONE
+Chuansao             mail                 13463246324
+Testing Remove User...
+Login successful.
+Delete successful.
+PASS
+ok      github.com/ZM-J/Agenda-Service/Client/vendor/service    0.906s
 ```
 
+其他的可选测试命令：
+```powershell
 go run main.go register --username SunXiaoChuan --password 258daidai --email 6324@douyu.com --phone 13838383838
 go run main.go register --username SunYaLong --password deyunse --email deyunse@douyu.com --phone 13666666666
-go run main.go login --username SunXiaoChuan --password 258daidai % right
-go run main.go login --username SunXiaoChuan --password daidai258 % wrong
+go run main.go login --username SunXiaoChuan --password 258daidai # right
+go run main.go login --username SunXiaoChuan --password daidai258 # wrong
 go run main.go listUsers
 go run main.go findUser --username SunYaLong
 go run main.go removeUser --username SunYaLong
 go run main.go logout
+```

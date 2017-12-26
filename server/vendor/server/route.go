@@ -142,7 +142,7 @@ func handlerUserDelete() http.HandlerFunc {
 			ResponseNotFound(formatter, w)
 			return
 		}
-		err = model.DeleteToken(token)
+		err = model.DeleteTokenByUsername(username)
 		if err != nil {
 			logger.FatalIf(err)
 			ResponseNotFound(formatter, w)
@@ -175,7 +175,7 @@ func handlerUserCreate() http.HandlerFunc {
 			return
 		}
 		logger.Info("CreateUser [%+v]\n", username)
-		ResponseOK(formatter, w, newUser)
+		ResponseCreated(formatter, w, newUser)
 	}
 }
 
