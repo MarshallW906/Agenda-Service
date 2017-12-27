@@ -3,5 +3,13 @@ language: go
 go:
   - 1.8
 
+sudo: required
+
 script:
+  - mkdir -p /data
+  - chmod 777 /data
+  - go build -o server.out ./server
+  - go build -o client.out ./client
+  - ./server.out &
   - go test -v ./server/vendor/model
+  - go test -v ./client/vendor/service
