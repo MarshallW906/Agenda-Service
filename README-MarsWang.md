@@ -1,4 +1,4 @@
-# Tasks that Marshall Wang does
+# Tasks that Marshall Wang completes
 
 - Init this repository.
   - [corresponding docker repo](registry.cn-shenzhen.aliyuncs.com/7737/agenda-service) (hosted in aliyuncs.com)
