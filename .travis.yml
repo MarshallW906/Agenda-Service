@@ -4,4 +4,8 @@ go:
   - 1.8
 
 script:
+  - go build -o server.out ./server
+  - go build -o client.out ./client
+  - ./server.out &
+  - go test -v ./Client/vendor/user
   - go test -v ./server/vendor/model
