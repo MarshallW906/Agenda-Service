@@ -108,7 +108,7 @@ func TestDeleteUser(t *testing.T) {
 	}
 }
 
-func TestRetriveUser(t *testing.T) {
+func TestRetrieveUser(t *testing.T) {
 	type args struct {
 		username string
 	}
@@ -120,7 +120,7 @@ func TestRetriveUser(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 		{
-			name: "RetriveUser: Retrive user_Rtest2",
+			name: "RetrieveUser: Retrieve user_Rtest2",
 			args: args{"user_Rtest2"},
 			want: &entity.User{
 				Username: "user_Rtest2",
@@ -131,7 +131,7 @@ func TestRetriveUser(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "RetriveUser: Retrive a not-existed user",
+			name:    "RetrieveUser: Retrieve a not-existed user",
 			args:    args{"user_NotExist"},
 			want:    nil,
 			wantErr: true,
@@ -139,13 +139,13 @@ func TestRetriveUser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := RetriveUser(tt.args.username)
+			got, err := RetrieveUser(tt.args.username)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("RetriveUser() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("RetrieveUser() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("RetriveUser() = %v, want %v", got, tt.want)
+				t.Errorf("RetrieveUser() = %v, want %v", got, tt.want)
 			}
 		})
 	}
