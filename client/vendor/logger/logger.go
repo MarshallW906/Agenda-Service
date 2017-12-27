@@ -21,6 +21,7 @@ func Info(format string, v ...interface{}) {
 
 func FatalIf(err error) {
 	if err != nil {
-		errLogger.Fatalln(err)
+		errLogger.Println(err)
+		os.Exit(0)
 	}
 }
