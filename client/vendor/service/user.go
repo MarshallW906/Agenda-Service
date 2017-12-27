@@ -13,7 +13,6 @@ import (
 	"storage"
 )
 
-// Finish: Client
 func Register(username string, password string, email string, phone string) {
 	form := url.Values{}
 	form.Add("username", username)
@@ -21,28 +20,33 @@ func Register(username string, password string, email string, phone string) {
 	form.Add("email", email)
 	form.Add("phone", phone)
 
-	req, err := http.NewRequest(http.MethodPut, "http://localhost:8080/users", strings.NewReader(form.Encode()))
+	req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/users", strings.NewReader(form.Encode()))
 	logger.FatalIf(err)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := http.DefaultClient.Do(req)
 	logger.FatalIf(err)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusCreated {
-		fmt.Println("Register successful.")
+		logger.Info("Register successful.")
 	} else {
-		fmt.Println("Register failed.")
-		panic(e.UserAlreadyExists)
+		logger.FatalIf(e.UserAlreadyExists)
 	}
 }
 
-// Finish: Client
 func Login(username string, password string) {
 	storage.RemoveSessionFile()
-	resp, err := http.Get("http://localhost:8080/token?username=" + username + "&password=" + password)
+
+	form := url.Values{}
+	form.Add("username", username)
+	form.Add("password", password)
+
+	req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/tokens", strings.NewReader(form.Encode()))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	resp, err := http.DefaultClient.Do(req)
 	logger.FatalIf(err)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
-		fmt.Println("Login successful.")
+		logger.Info("Login successful.")
 		var inter map[string]interface{}
 		err = json.NewDecoder(resp.Body).Decode(&inter)
 		logger.FatalIf(err)
@@ -51,32 +55,28 @@ func Login(username string, password string) {
 			CurrentToken: data["token"].(string),
 		})
 	} else {
-		fmt.Println("Login failed.")
-		panic(e.WrongUsernameOrPassword)
+		logger.FatalIf(e.WrongUsernameOrPassword)
 	}
 }
 
-// Finish: Client
 func Logout() {
 	token, ok := storage.LoadCurToken()
 	if !ok {
-		return
+		logger.FatalIf(e.RequireLoggedIn)
 	}
-	req, err := http.NewRequest(http.MethodDelete, "http://localhost:8080/token?token="+token, nil)
+	req, err := http.NewRequest(http.MethodDelete, "http://localhost:8080/tokens/"+token, nil)
 	logger.FatalIf(err)
 	resp, err := http.DefaultClient.Do(req)
 	logger.FatalIf(err)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
-		fmt.Println("Logout successful.")
+		logger.Info("Logout successful.")
 	} else {
-		fmt.Println("Logout failed.")
-		panic(e.RequireLoggedIn)
+		logger.FatalIf(e.RequireLoggedIn)
 	}
 	storage.RemoveSessionFile()
 }
 
-// Finish: Client
 func ListAllUsers() {
 	token, ok := storage.LoadCurToken()
 	if !ok {
@@ -96,16 +96,14 @@ func ListAllUsers() {
 			fmt.Printf("%-20s %-20s %-20s\n", user["username"], user["email"], user["phone"])
 		}
 	} else {
-		fmt.Println("Unauthorized!")
-		panic(e.RequireLoggedIn)
+		logger.FatalIf(e.RequireLoggedIn)
 	}
 }
 
-// Finish: Client
 func RemoveUser(username string) {
 	token, ok := storage.LoadCurToken()
 	if !ok {
-		return
+		logger.FatalIf(e.RequireLoggedIn)
 	}
 	req, err := http.NewRequest(http.MethodDelete, "http://localhost:8080/users/"+username+"?token="+token, nil)
 	logger.FatalIf(err)
@@ -113,18 +111,16 @@ func RemoveUser(username string) {
 	logger.FatalIf(err)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
-		fmt.Println("Delete successful.")
+		logger.Info("Delete successful.")
 	} else {
-		fmt.Println("Delete failed.")
-		panic(e.RequireLoggedIn)
+		logger.FatalIf(e.RequireLoggedIn)
 	}
 }
 
-// TODO: Client
 func FindUser(username string) {
 	token, ok := storage.LoadCurToken()
 	if !ok {
-		return
+		logger.FatalIf(e.RequireLoggedIn)
 	}
 	resp, err := http.Get("http://localhost:8080/users/" + username + "?token=" + token)
 	logger.FatalIf(err)
@@ -137,10 +133,8 @@ func FindUser(username string) {
 		fmt.Printf("%-20s %-20s %-20s\n", "USERNAME", "EMAIL", "PHONE")
 		fmt.Printf("%-20s %-20s %-20s\n", data["username"], data["email"], data["phone"])
 	} else if resp.StatusCode == http.StatusUnauthorized {
-		fmt.Println("Unauthorized!")
-		panic(e.RequireLoggedIn)
+		logger.FatalIf(e.RequireLoggedIn)
 	} else {
-		fmt.Println("User not exists.")
-		panic(e.UserNotExist)
+		logger.FatalIf(e.UserNotExist)
 	}
 }
