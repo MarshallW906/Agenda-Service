@@ -6,8 +6,8 @@ go:
 sudo: required
 
 script:
-  - mkdir -p /data
-  - chmod 777 /data
+  - sudo mkdir -p /data
+  - sudo chmod 777 /data
   - go build -o server.out ./server
   - go build -o client.out ./client
   - ./server.out &
