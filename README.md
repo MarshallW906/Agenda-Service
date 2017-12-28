@@ -29,3 +29,8 @@ docker run -d -p 8080:8080 -v /server_data:/data --rm --name agenda_server fideo
 alias agenda_cli='docker run --net host -v /cli_data:/data --rm fideo/agenda-service client'
 agenda_cli -h
 ```
+
+## Test Results
+
+- Test for Client CLI (including mock server) : See at `client/`
+- Test for Server : See at `server/`
