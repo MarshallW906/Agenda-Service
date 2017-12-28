@@ -3,11 +3,13 @@ language: go
 go:
   - 1.8
 
+sudo: required
+
 script:
+  - sudo mkdir -p /data
+  - sudo chmod 777 /data
   - go build -o server.out ./server
-  - go build -o client.out ./Client
-  # will always failed at Client/service test because cannot open session.json
-  # manually test on local PC has been passed.
-  # - ./server.out &
-  # - go test -v ./Client/vendor/service
-  # - go test -v ./server/vendor/model
+  - go build -o client.out ./client
+  - ./server.out &
+  - go test -v ./server/vendor/model
+  - go test -v ./client/vendor/service

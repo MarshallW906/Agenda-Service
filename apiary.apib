@@ -3,9 +3,9 @@ HOST: https://localhost:8080
 
 # AgendaService
 
-## Token [/token{?username,password,token}]
+# Group Token
 
-+ token
+## Tokens Collection [/tokens]
 
 Response Code and msg:
 Code | msg      | description
@@ -14,11 +14,14 @@ Code | msg      | description
 401  | Unauthorized  | log out fail
 403  | Forbidden     | log in fail
 
-### Retrieve a token [GET]
+### Create a token [POST]
 
-+ Parameters
-    - username : `user` (string, required) - User Name
-    - password : `pass` (string, required) - User Password
++ Request (application/x-www-form-urlencoded)
+
+        {
+            "username":"user",
+            "password":"pass",
+        }
 
 + Response 200 (application/json)
 
@@ -37,13 +40,12 @@ Code | msg      | description
             "data": null
         }
 
+## Token [/tokens/{token_string}]
 
 ### Remove a token [DELETE]
 
-Remove an authorization token from database.
-
 + Parameters
-    - token : `1a2b3c` (string, required) - Token
+    - token_string : `1a2b3c` (string, required) - Token
 
 + Response 200 (application/json)
 
@@ -59,71 +61,7 @@ Remove an authorization token from database.
             "data": null
         }
 
-## User [/users/%7busername%7d{?token}]
-
-Response Code and Reason:
-Code | msg      | description
----- | -------      | -----------
-200  | OK           | retrive/delete successfully
-401  | Unauthorized | unauthorized token
-404  | Not Found    | no such user
-
-+ Parameters
-    - token : `1a2b3c` (string, required) - Token
-
-### Retrive A User [GET]
-
-Return a specific user with username.
-
-+ Response 200 (application/json)
-
-        {
-            "msg":"OK",
-            "data":
-                    {
-                        "username":"user",
-                        "email":"user@example.com",
-                        "phone":"13333333333"
-                    }
-        }
-
-+ Response 401 (application/json)
-
-        {
-            "msg":"Unauthorized",
-            "data": null
-        }
-
-+ Response 404 (application/json)
-
-        {
-            "msg":"Not Found",
-            "data": null
-        }
-
-### Delete A User [DELETE]
-
-+ Response 200 (application/json)
-
-        {
-            "msg":"OK",
-            "data": null
-        }
-
-+ Response 401 (application/json)
-
-        {
-            "msg":"Unauthorized",
-            "data": null
-        }
-
-+ Response 404 (application/json)
-
-        {
-            "msg":"Not Found",
-            "data": null
-        }
-
+# Group User
 
 ## Users Collection [/users{?token}]
 
@@ -135,9 +73,9 @@ Code | msg      | description
 401  | Unauthorized | unauthorized token
 409  | Conflict     | username conflict
 
-### Create A User [PUT]
+### Create A User [POST]
 
-+ Request (application/json)
++ Request (application/x-www-form-urlencoded)
 
         {
             "username":"user",
@@ -196,5 +134,72 @@ Code | msg      | description
 
         {
             "msg":"Unauthorized",
+            "data": null
+        }
+
+
+## User [/users/{username}/{?token}]
+
+Response Code and Reason:
+Code | msg      | description
+---- | -------      | -----------
+200  | OK           | retrieve/delete successfully
+401  | Unauthorized | unauthorized token
+404  | Not Found    | no such user
+
++ Parameters
+    - username: `user` (string, required) - username
+    - token: `1a2b3c` (string, required) - Token
+
+### Retrieve A User [GET]
+
+Return a specific user with username.
+
++ Response 200 (application/json)
+
+        {
+            "msg":"OK",
+            "data":
+                    {
+                        "username":"user",
+                        "email":"user@example.com",
+                        "phone":"13333333333"
+                    }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "msg":"Unauthorized",
+            "data": null
+        }
+
++ Response 404 (application/json)
+
+        {
+            "msg":"Not Found",
+            "data": null
+        }
+
+### Delete A User [DELETE]
+
++ Response 200 (application/json)
+
+        {
+            "msg":"OK",
+            "data": null
+        }
+
++ Response 401 (application/json)
+
+        {
+            "msg":"Unauthorized",
+            "data": null
+        }
+
++ Response 404 (application/json)
+
+        {
+            "msg":"Not Found",
             "data": null
         }

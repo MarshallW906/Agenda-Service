@@ -33,8 +33,8 @@ func DeleteUser(username string) error {
 	return err
 }
 
-// RetriveUser ..
-func RetriveUser(username string) (*entity.User, error) {
+// RetrieveUser ..
+func RetrieveUser(username string) (*entity.User, error) {
 	theUser := &entity.User{Username: username}
 	has, err := database.Engine.Table("User").Get(theUser)
 	if err != nil {

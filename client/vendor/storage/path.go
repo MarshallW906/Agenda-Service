@@ -5,11 +5,7 @@ import (
 )
 
 func AgendaDir() string {
-	home, present := os.LookupEnv("HOME")
-	if !present {
-		home = "."
-	}
-	return home + "/.agenda/"
+	return "/data/"
 }
 
 func SessionFile() string {
