@@ -13,6 +13,11 @@ import (
 	"storage"
 )
 
+var (
+	localhostURI  = "http://localhost:8080"
+	mockserverURI = "https://private-cf3af9-agenda33.apiary-mock.com"
+)
+
 func Register(username string, password string, email string, phone string) {
 	form := url.Values{}
 	form.Add("username", username)
@@ -20,7 +25,7 @@ func Register(username string, password string, email string, phone string) {
 	form.Add("email", email)
 	form.Add("phone", phone)
 
-	req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/users", strings.NewReader(form.Encode()))
+	req, err := http.NewRequest(http.MethodPost, mockserverURI+"/users", strings.NewReader(form.Encode()))
 	logger.FatalIf(err)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := http.DefaultClient.Do(req)
@@ -40,7 +45,7 @@ func Login(username string, password string) {
 	form.Add("username", username)
 	form.Add("password", password)
 
-	req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/tokens", strings.NewReader(form.Encode()))
+	req, err := http.NewRequest(http.MethodPost, mockserverURI+"/tokens", strings.NewReader(form.Encode()))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := http.DefaultClient.Do(req)
 	logger.FatalIf(err)
@@ -64,7 +69,7 @@ func Logout() {
 	if !ok {
 		logger.FatalIf(e.RequireLoggedIn)
 	}
-	req, err := http.NewRequest(http.MethodDelete, "http://localhost:8080/tokens/"+token, nil)
+	req, err := http.NewRequest(http.MethodDelete, mockserverURI+"/tokens/"+token, nil)
 	logger.FatalIf(err)
 	resp, err := http.DefaultClient.Do(req)
 	logger.FatalIf(err)
@@ -82,13 +87,19 @@ func ListAllUsers() {
 	if !ok {
 		logger.FatalIf(e.RequireLoggedIn)
 	}
-	resp, err := http.Get("http://localhost:8080/users?token=" + token)
+	resp, err := http.Get(mockserverURI + "/users?token=" + token)
 	logger.FatalIf(err)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
+		fmt.Println("ok 1")
+		// _, err := ioutil.ReadAll(resp.Body)
+		// logger.FatalIf(err)
+		// fmt.Println(body)
+		fmt.Println("ok 1.5")
 		var inter map[string]interface{}
 		err = json.NewDecoder(resp.Body).Decode(&inter)
 		logger.FatalIf(err)
+		fmt.Println("ok 2")
 		data := inter["data"].([]interface{})
 		fmt.Printf("%-20s %-20s %-20s\n", "USERNAME", "EMAIL", "PHONE")
 		for _, user := range data {
@@ -105,7 +116,7 @@ func RemoveUser(username string) {
 	if !ok {
 		logger.FatalIf(e.RequireLoggedIn)
 	}
-	req, err := http.NewRequest(http.MethodDelete, "http://localhost:8080/users/"+username+"?token="+token, nil)
+	req, err := http.NewRequest(http.MethodDelete, mockserverURI+"/users/"+username+"?token="+token, nil)
 	logger.FatalIf(err)
 	resp, err := http.DefaultClient.Do(req)
 	logger.FatalIf(err)
@@ -122,7 +133,7 @@ func FindUser(username string) {
 	if !ok {
 		logger.FatalIf(e.RequireLoggedIn)
 	}
-	resp, err := http.Get("http://localhost:8080/users/" + username + "?token=" + token)
+	resp, err := http.Get(mockserverURI + "/users/" + username + "?token=" + token)
 	logger.FatalIf(err)
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusOK {
