@@ -39,6 +39,35 @@ go build
   - args: username string
   - notes: 要求已登录
 
+## Test on Mock Server
+
+Test CLI subcommands on Mock Server.
+
+Note: There's something wrong with `listUsers`, as it returns an error `"invalid character '"' ..."` and we don't know why. But it works well when connecting to the **true** server. The test on `listUsers` in the following was actually connecting to `localhost:8080`. (Others were truly connecting to mock server)
+
+```bash
+client git:(cli-mock-test) ✗ go run main.go register --username user --password pass --email user@example.com --phone 13333333333
+go run main.go login --username user --password pass
+go run main.go login --username user --password wrong
+go run main.go listUsers
+go run main.go findUser --username user
+go run main.go removeUser --username user
+go run main.go logout
+[INFO] 2017/12/28 16:37:38 Register successful.
+[INFO] 2017/12/28 16:37:38 Register called with username:[user], password:[pass], email:[user@example.com], phone:[13333333333]
+[INFO] 2017/12/28 16:37:40 Login successful.
+[INFO] 2017/12/28 16:37:40 Login called with username:[user], password:[pass]
+[INFO] 2017/12/28 16:37:42 Login successful.
+[INFO] 2017/12/28 16:37:42 Login called with username:[user], password:[wrong]
+[ERROR] 2017/12/28 16:37:43 Not logged in yet
+USERNAME             EMAIL                PHONE
+user                 user@example.com     13333333333
+[INFO] 2017/12/28 16:37:45 FindUser called with username:[user]
+[INFO] 2017/12/28 16:37:48 Delete successful.
+[INFO] 2017/12/28 16:37:48 RemoveUser called with username:[user]
+[INFO] 2017/12/28 16:37:50 Logout successful.
+[INFO] 2017/12/28 16:37:50 Logout called
+```
 
 ## Test Subcommands
 `user_test.go`测试结果：
