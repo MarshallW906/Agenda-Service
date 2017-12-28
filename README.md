@@ -24,8 +24,8 @@ $GOPATH/bin/client -h
 
 ### Docker
 ```
-docker pull fideo/agendaservice
-docker run -d -p 8080:8080 -v /server_data:/data --rm --name agenda_server fideo/agendaservice server
-alias agenda_cli='docker run --net host -v /cli_data:/data --rm fideo/agendaservice client'
+docker pull fideo/agenda-service
+docker run -d -p 8080:8080 -v /server_data:/data --rm --name agenda_server fideo/agenda-service server
+alias agenda_cli='docker run --net host -v /cli_data:/data --rm fideo/agenda-service client'
 agenda_cli -h
 ```
